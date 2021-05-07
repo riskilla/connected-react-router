@@ -4,13 +4,15 @@
  */
 export const LOCATION_CHANGE = '@@router/LOCATION_CHANGE'
 
-export const onLocationChanged = (location, action) => ({
+export const onLocationChanged = (location, action, isFirstRendering = false) => ({
   type: LOCATION_CHANGE,
   payload: {
     location,
     action,
+    isFirstRendering,
   }
 })
+
 
 /**
  * This action type will be dispatched by the history actions below.

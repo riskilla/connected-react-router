@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Router } from 'react-router'
@@ -13,7 +13,7 @@ const createConnectedRouter = (structure) => {
    * This creates uni-directional flow from history->store->router->components.
    */
 
-  class ConnectedRouter extends Component {
+  class ConnectedRouter extends PureComponent {
     constructor(props, context) {
       super(props)
 
@@ -46,10 +46,10 @@ const createConnectedRouter = (structure) => {
         }
       })
 
-      const handleLocationChange = (location, action) => {
+      const handleLocationChange = (location, action, isFirstRendering = false) => {
         // Dispatch onLocationChanged except when we're in time travelling
         if (!this.inTimeTravelling) {
-          props.onLocationChanged(location, action)
+          props.onLocationChanged(location, action, isFirstRendering)
         } else {
           this.inTimeTravelling = false
         }
@@ -57,8 +57,13 @@ const createConnectedRouter = (structure) => {
 
       // Listen to history changes
       this.unlisten = props.history.listen(handleLocationChange)
-      // Dispatch a location change action for the initial location
-      handleLocationChange(props.history.location, props.history.action)
+
+      if (!props.noInitialPop) {
+        // Dispatch a location change action for the initial location.
+        // This makes it backward-compatible with react-router-redux.
+        // But, we add `isFirstRendering` to `true` to prevent double-rendering.
+        handleLocationChange(props.history.location, props.history.action, true)
+      }
     }
 
     componentWillUnmount() {
@@ -101,16 +106,11 @@ const createConnectedRouter = (structure) => {
     onLocationChanged: PropTypes.func.isRequired,
   }
 
-  const mapStateToProps = state => ({
-    action: getIn(state, ['router', 'action']),
-    location: getIn(state, ['router', 'location']),
-  })
-
   const mapDispatchToProps = dispatch => ({
-    onLocationChanged: (location, action) => dispatch(onLocationChanged(location, action))
+    onLocationChanged: (location, action, isFirstRendering) => dispatch(onLocationChanged(location, action, isFirstRendering))
   })
 
-  return connect(mapStateToProps, mapDispatchToProps)(ConnectedRouter)
+  return connect(null, mapDispatchToProps)(ConnectedRouter)
 }
 
 export default createConnectedRouter
