@@ -1,7 +1,7 @@
 {
-  "name": "connected-react-router",
+  "name": "@sensibull/connected-react-router",
   "version": "4.5.0",
-  "description": "A Redux binding for React Router v4",
+  "description": "a fork of connected-react-router library",
   "main": "lib/index.js",
   "types": "./index.d.ts",
   "author": "Supasate Choochaisri",
