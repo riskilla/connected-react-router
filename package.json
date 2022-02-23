@@ -1,5 +1,5 @@
 {
-  "name": "@sensibull/connected-react-router",
+  "name": "@riskilla/connected-react-router",
   "version": "4.5.0",
   "description": "a fork of connected-react-router library",
   "main": "lib/index.js",
@@ -69,11 +69,14 @@
     "rewire": "^2.5.2",
     "webpack": "^2.2.1"
   },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/supasate/connected-react-router.git"
+    "url": "https://github.com/riskilla/connected-react-router.git"
   },
   "bugs": {
-    "url": "https://github.com/supasate/connected-react-router/issues"
+    "url": "https://github.com/riskilla/connected-react-router/issues"
   }
 }
